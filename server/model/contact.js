@@ -35,7 +35,7 @@ Contact.addContact = async (contact) => {
 
 Contact.updContact = async (contact) => {
   const query =
-    "UPDATE contact SET name = COALESCE(?,name), email = COALESCE(?,email), phone = COALESCE(?,phone), address = COALESCE(?,address) WHERE contactId = ?;";
+    "UPDATE contact SET name = COALESCE(?,name), email = COALESCE(?,email), phone = COALESCE(?,phone), address = COALESCE(?,address), lat = COALESCE(?,lat), lng = COALESCE(?,lng) WHERE contactId = ?;";
   let geoInfo = await getGeoInfo(contact.address);
 
   let lng = geoInfo[0];
@@ -46,7 +46,10 @@ Contact.updContact = async (contact) => {
     contact.email,
     contact.phone,
     contact.address,
+    lat,
+    lng,
     contact.contactId,
+
   ];
 
   try {
