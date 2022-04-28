@@ -1,0 +1,21 @@
+  <table id="contact-table">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th></th>
+    </tr>
+    {{#each .}}
+      <tr id={{contactId}}>
+        <td>{{name}}</td>
+        <td>{{email}}</td>
+        <td>{{phone}}</td>
+        <td>{{address}}</td>
+        <td>
+          <input type="hidden" value={{contactId}} class="cId"/>
+          <input type="button" value="D" class="btnDel"/>
+          <input type="button" value="U" class="btnUpdate" /></td>
+      </tr>
+    {{/each}}
+  </table>
