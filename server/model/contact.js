@@ -49,7 +49,6 @@ Contact.updContact = async (contact) => {
     lat,
     lng,
     contact.contactId,
-
   ];
 
   try {

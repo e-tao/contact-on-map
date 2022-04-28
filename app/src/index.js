@@ -40,6 +40,14 @@ mapInit();
 
 let getContacts = async function () {
   let contactLists = await (await fetch(queryUrl)).json();
+  let geoList = [];
+
+  for (let i = 0; i < contactLists.length; i++){
+    geoList.push([contactLists[i].lng, contactLists[i].lat])
+  }
+  Locateuser(geoList);
+  // console.log(geoList);
+
   contactEl.innerHTML = contactTemplate(contactLists);
   removeContact();
   updateContact();
@@ -159,12 +167,16 @@ function updateContact() {
 }
 
 let Locateuser = function (location) {
-  new mapboxgl.Marker({
-    color: "red",
-  })
-    .setLngLat(location)
-    .setPopup(new mapboxgl.Popup().setHTML("<h4>your friend is here</h4>"))
-    .addTo(map);
 
-  map.setCenter(location);
+  for (let i = 0; i < location.length; i++){
+    new mapboxgl.Marker({
+      color: "red",
+    })
+      .setLngLat(location[i])
+      .setPopup(new mapboxgl.Popup().setHTML("<h4>your friend is here</h4>"))
+      .addTo(map);
+  }
+
+
+  map.setCenter(location[0]);
 };
