@@ -1,20 +1,24 @@
-const axios = require("axios");
+const axios = require("axios").default;
+const { response } = require("express");
 const db = require("./db");
 
-const apiKey = "d3882bb4f3c5d1711938443255e24f37";
+
+const apiKey = "6e9f65135732a09abd4346c6defb1160";
 const apiUrl = "http://api.positionstack.com/v1/forward?access_key=";
 
 let Contact = {};
 
 Contact.addContact = async (contact) => {
+
+  // console.log(contact.address);
   const query =
     "INSERT INTO contact (name, email, phone, address, lat, lng) VALUES (?,?,?,?,?,?)";
 
   // get the geo location when add contact
   let geoInfo = await getGeoInfo(contact.address);
   // console.log(geoQueryResult.data.data[0].latitude);
-  let lng = geoInfo[0];
-  let lat = geoInfo[1];
+
+  const [lng, lat] = geoInfo;
 
   const data = [
     contact.name,
@@ -24,9 +28,11 @@ Contact.addContact = async (contact) => {
     lat,
     lng,
   ];
+
+
   try {
     db.run(query, data);
-    return { message: "success", geoinfo: geoInfo };
+    return { message: "success", geoinfo: geoInfo};
   } catch (err) {
     db.close();
     return;
@@ -38,8 +44,7 @@ Contact.updContact = async (contact) => {
     "UPDATE contact SET name = COALESCE(?,name), email = COALESCE(?,email), phone = COALESCE(?,phone), address = COALESCE(?,address), lat = COALESCE(?,lat), lng = COALESCE(?,lng) WHERE contactId = ?;";
   let geoInfo = await getGeoInfo(contact.address);
 
-  let lng = geoInfo[0];
-  let lat = geoInfo[1];
+  const [lng, lat] = geoInfo;
 
   const data = [
     contact.name,
@@ -75,12 +80,23 @@ Contact.delContact = (contact) => {
 };
 
 async function getGeoInfo(address) {
-  let geoQuery = `${apiUrl}${apiKey}&query=${address}`;
+  // const options = {
+  //   method: 'get',
+  //   headers: {
+  //     "Content-Type": "application/json; charset=UTF-8",
+  //     'User-Agent': 'Mozilla/5.0',
+  //   }
+  // }  
+  
+  let geoQuery = `${apiUrl}${apiKey}&query=${address}&limit=1`;
   let geoQueryResult = await axios.get(geoQuery);
+
+  console.log(geoQueryResult);
   let lat = geoQueryResult.data.data[0].latitude;
   let lng = geoQueryResult.data.data[0].longitude;
 
   let geoInfo = [lng, lat];
+  // let geoInfo = [0,0];
   return geoInfo;
 }
 

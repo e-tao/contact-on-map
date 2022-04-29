@@ -16,6 +16,7 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/", async function (req, res, next) {
+  // console.log(req.body);
   let result = await contactModel.addContact(req.body);
   res.send(JSON.stringify(result));
 });

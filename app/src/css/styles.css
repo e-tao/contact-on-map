@@ -3,6 +3,10 @@
   padding: 0;
 }
 
+header{
+  text-align: center;
+}
+
 #container {
   display: flex;
   flex-direction: column;

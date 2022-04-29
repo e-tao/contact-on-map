@@ -23,7 +23,7 @@ let contactId = 0;
 const queryUrl = "http://localhost:3000/contacts";
 
 mapboxgl.accessToken =
-  "pk.eyJ1IjoiZS10YW8iLCJhIjoiY2wyYW43NHJoMDZ6bTNqbzJqNzd1aTF2ZCJ9.M6R7JnP6fQrQhbkLCGl2zg";
+  "pk.eyJ1IjoiZS10YW8iLCJhIjoiY2wya2g1ZWNzMTUxdjNjbGE3dG4yb3JoaiJ9._ZL2oB8k_zke9ldXSpn67w";
 
 let map;
 
@@ -58,17 +58,16 @@ getContacts();
 
 btnAdd.addEventListener("click", async () => {
   let newContact = getInputs(update);
-  //   console.log("add user to the list");
-  let response = await fetch(queryUrl, {
+
+  let response = await (await fetch(queryUrl, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      "Content-Type": "application/json", 
     },
     body: JSON.stringify(newContact),
-  });
+  })).json();
 
-  let geoCoord = (await response.json()).geoinfo;
+  let geoCoord = response.geoinfo;
 
   Locateuser(geoCoord);
 
@@ -167,7 +166,6 @@ function updateContact() {
 }
 
 let Locateuser = function (location) {
-
   for (let i = 0; i < location.length; i++){
     new mapboxgl.Marker({
       color: "red",
@@ -176,7 +174,5 @@ let Locateuser = function (location) {
       .setPopup(new mapboxgl.Popup().setHTML("<h4>your friend is here</h4>"))
       .addTo(map);
   }
-
-
   map.setCenter(location[0]);
 };
