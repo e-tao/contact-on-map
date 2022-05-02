@@ -1,6 +1,5 @@
 var express = require("express");
 var router = express.Router();
-const axios = require("axios");
 const db = require("../model/db");
 const contactModel = require("../model/contact");
 
@@ -16,7 +15,6 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/", async function (req, res, next) {
-  // console.log(req.body);
   let result = await contactModel.addContact(req.body);
   res.send(JSON.stringify(result));
 });
@@ -28,7 +26,6 @@ router.patch("/", async function (req, res, next) {
 
 router.delete("/", function (req, res, next) {
   contactModel.delContact(req.body);
-  res.send("user deleted");
 });
 
 module.exports = router;

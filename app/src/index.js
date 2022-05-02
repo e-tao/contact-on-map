@@ -3,6 +3,7 @@ import layoutTemplate from "./hbs/layout.hbs";
 import mapTemplate from "./hbs/map.hbs";
 import contactTemplate from "./hbs/contacts.hbs";
 import editTemplate from "./hbs/edit.hbs";
+import accessToken from "../apiKey";
 
 const appEl = document.getElementById("app");
 const siteInfo = { title: "Contacts and their Geolocations" };
@@ -20,10 +21,9 @@ let btnUpd = document.getElementById("btnUpd");
 let update = false;
 let contactId = 0;
 
-const queryUrl = "http://localhost:3000/contacts";
+const queryUrl = "http://localhost:3000/contacts/";
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiZS10YW8iLCJhIjoiY2wya2g1ZWNzMTUxdjNjbGE3dG4yb3JoaiJ9._ZL2oB8k_zke9ldXSpn67w";
+mapboxgl.accessToken = accessToken.access.apiKey;
 
 let map;
 
@@ -42,8 +42,8 @@ let getContacts = async function () {
   let contactLists = await (await fetch(queryUrl)).json();
   let geoList = [];
 
-  for (let i = 0; i < contactLists.length; i++){
-    geoList.push([contactLists[i].lng, contactLists[i].lat])
+  for (let i = 0; i < contactLists.length; i++) {
+    geoList.push([contactLists[i].lng, contactLists[i].lat]);
   }
   Locateuser(geoList);
   // console.log(geoList);
@@ -59,13 +59,15 @@ getContacts();
 btnAdd.addEventListener("click", async () => {
   let newContact = getInputs(update);
 
-  let response = await (await fetch(queryUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json", 
-    },
-    body: JSON.stringify(newContact),
-  })).json();
+  let response = await (
+    await fetch(queryUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newContact),
+    })
+  ).json();
 
   let geoCoord = response.geoinfo;
 
@@ -166,7 +168,7 @@ function updateContact() {
 }
 
 let Locateuser = function (location) {
-  for (let i = 0; i < location.length; i++){
+  for (let i = 0; i < location.length; i++) {
     new mapboxgl.Marker({
       color: "red",
     })

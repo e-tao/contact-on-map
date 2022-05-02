@@ -1,15 +1,13 @@
 const axios = require("axios").default;
-const { response } = require("express");
 const db = require("./db");
+const apiAccess = require("../apiKey");
 
-
-const apiKey = "6e9f65135732a09abd4346c6defb1160";
-const apiUrl = "http://api.positionstack.com/v1/forward?access_key=";
+const apiKey = apiAccess.access.apiKey;
+const apiUrl = apiAccess.access.apiUrl;
 
 let Contact = {};
 
 Contact.addContact = async (contact) => {
-
   // console.log(contact.address);
   const query =
     "INSERT INTO contact (name, email, phone, address, lat, lng) VALUES (?,?,?,?,?,?)";
@@ -29,10 +27,9 @@ Contact.addContact = async (contact) => {
     lng,
   ];
 
-
   try {
     db.run(query, data);
-    return { message: "success", geoinfo: geoInfo};
+    return { message: "success", geoinfo: geoInfo };
   } catch (err) {
     db.close();
     return;
@@ -86,8 +83,8 @@ async function getGeoInfo(address) {
   //     "Content-Type": "application/json; charset=UTF-8",
   //     'User-Agent': 'Mozilla/5.0',
   //   }
-  // }  
-  
+  // }
+
   let geoQuery = `${apiUrl}${apiKey}&query=${address}&limit=1`;
   let geoQueryResult = await axios.get(geoQuery);
 
