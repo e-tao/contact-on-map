@@ -27,4 +27,4 @@ The project uses the following language, toolkit, IDE, database etc...
 - [git]
 
 ## Screenshot
-![Application Screenshot](https://github.com/e-tao/Y22-GPRJ-Website_Flask/blob/main/screenshot/Y22_project_screenshot.PNG?raw=true)
+![Application Screenshot](https://github.com/e-tao/contact-on-map/blob/main/Capture.PNG?raw=true)
